@@ -75,11 +75,11 @@ int tcp_socket_connect(struct tcp_socket *sock, const char *ip, unsigned port)
 
     sock->s = socket(AF_INET, SOCK_STREAM, 0);
     if (sock->s == INVALID_SOCKET)
-        return SOCK_ERR;
+        return SOCKET_ERROR;
 
     ret_val = connect(sock->s, (struct sockaddr *)&sock_addr, sizeof(sock_addr));
     if (ret_val == SOCKET_ERROR)
-        return SOCK_ERR;
+        return SOCKET_ERROR;
     return 0;
 }
 
@@ -90,7 +90,7 @@ int tcp_socket_send(struct tcp_socket *sock, void *data, size_t len)
     for (;;) {
         ret_val = send(sock->s, data, len, 0);
         if (ret_val == SOCKET_ERROR)
-            return SOCK_ERR;
+            return SOCKET_ERROR;
 
         if (ret_val == (int)len)
             break;
@@ -105,7 +105,7 @@ int tcp_socket_recv(struct tcp_socket *sock, void *data, size_t len)
     for (;;) {
         ret_val = recv(sock->s, data, len, 0);
         if (ret_val == SOCKET_ERROR)
-            return SOCK_ERR;
+            return SOCKET_ERROR;
 
         if (ret_val == (int)len)
             break;
@@ -124,7 +124,7 @@ int tcp_socket_bind(struct tcp_socket *sock, unsigned port)
 
     sock->s = socket(AF_INET, SOCK_STREAM, 0);
     if (sock->s == INVALID_SOCKET)
-        return SOCK_ERR;
+        return SOCKET_ERROR;
 
     memset(&sock_addr, 0, sizeof(sock_addr));
     sock_addr.sin_family = AF_INET;
@@ -138,11 +138,11 @@ int tcp_socket_bind(struct tcp_socket *sock, unsigned port)
 
     ret_val = bind(sock->s, (struct sockaddr *)&sock_addr, sizeof(sock_addr));
     if (ret_val == SOCKET_ERROR)
-        return SOCK_ERR;
+        return SOCKET_ERROR;
 
     ret_val = listen(sock->s, 5);
     if (ret_val == SOCKET_ERROR)
-        return SOCK_ERR;
+        return SOCKET_ERROR;
 
     pthread_create(&sock->srv_th, NULL, &tcp_socket_srv_thread, (void *)sock);
     pthread_detach(sock->srv_th);

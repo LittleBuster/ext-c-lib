@@ -30,8 +30,6 @@
     #define SOCKET int
 #endif
 
-#define SOCK_ERR -1
-
 
 struct tcp_socket {
     /* Socket id */
@@ -61,7 +59,7 @@ struct tcp_socket* tcp_socket_init(void);
  * @port: tcp port of other socket
  *
  * Returns 0 if succeful connection
- * Returns SOCK_ERR if fail connection
+ * Returns SOCKET_ERROR if fail connection
  */
 int tcp_socket_connect(struct tcp_socket *sock, const char *ip, unsigned port);
 
@@ -72,7 +70,7 @@ int tcp_socket_connect(struct tcp_socket *sock, const char *ip, unsigned port);
  * @len: size of sendign data
  *
  * Returns 0 if succeful sending
- * Returns SOCK_ERR if fail sending
+ * Returns SOCKET_ERROR if fail sending
  */
 int tcp_socket_send(struct tcp_socket *sock, void *data, size_t len);
 
@@ -83,7 +81,7 @@ int tcp_socket_send(struct tcp_socket *sock, void *data, size_t len);
  * @len: size of receiving data
  *
  * Returns 0 if succeful receiving
- * Returns SOCK_ERR if fail receiving
+ * Returns SOCKET_ERROR if fail receiving
  */
 int tcp_socket_recv(struct tcp_socket *sock, void *data, size_t len);
 
@@ -94,7 +92,7 @@ int tcp_socket_recv(struct tcp_socket *sock, void *data, size_t len);
  * @port: tcp port of server
  *
  * Returns 0 if succeful starting
- * Returns SOCK_ERR if fail binding ip address or port
+ * Returns SOCKET_ERROR if fail binding ip address or port
  */
 int tcp_socket_bind(struct tcp_socket *sock, unsigned port);
 

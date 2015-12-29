@@ -1,4 +1,4 @@
-/* EXTC Network library
+/* EXTC Network module
  *
  * Extended C-library
  *
@@ -34,14 +34,13 @@
 struct tcp_socket {
     /* Socket id */
     SOCKET s;
-    pthread_t srv_th;
 
     /* Client accept error signal */
     void (*accept_error)(void);
 
     /*
      * New client session
-     * WARNING! data need to be freed!
+     * WARNING! If clients > 1, data need to be freed!
      */
     void* (*new_session)(void *data);
 };
@@ -50,7 +49,7 @@ struct tcp_socket {
 /*
  * Socket initialization
  */
-struct tcp_socket* tcp_socket_init(void);
+int tcp_socket_init(struct tcp_socket *sock);
 
 /**
  * Connect to other socket
@@ -94,7 +93,7 @@ int tcp_socket_recv(struct tcp_socket *sock, void *data, size_t len);
  * Returns 0 if succeful starting
  * Returns SOCKET_ERROR if fail binding ip address or port
  */
-int tcp_socket_bind(struct tcp_socket *sock, unsigned port);
+int tcp_socket_bind(struct tcp_socket *sock, unsigned port, unsigned max_clients);
 
 /*
  * Close connection
@@ -102,6 +101,6 @@ int tcp_socket_bind(struct tcp_socket *sock, unsigned port);
 void tcp_socket_close(struct tcp_socket *sock);
 
 /*
- * Free memory
+ * Free win32 memory
  */
-void tcp_socket_quit(struct tcp_socket *sock);
+void tcp_socket_quit(void);

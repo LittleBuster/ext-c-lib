@@ -1,4 +1,4 @@
-/* EXTC Network library
+/* EXTC Network module
  *
  * Extended C-library
  *
@@ -12,55 +12,22 @@
  */
 
 
-#include "extc_tcpsocket.h"
+#include "tcpsocket.h"
 #include <stdlib.h>
 
 
-static void* tcp_socket_srv_thread(void *data)
-{
-    SOCKET s_client;
-    struct tcp_socket *server;
-
-    server = (struct tcp_socket *)data;
-
-    for (;;) {
-        s_client = accept(server->s, NULL, NULL);
-        if (s_client == SOCKET_ERROR) {
-            if (server->accept_error != NULL)
-                server->accept_error();
-            continue;
-        }
-
-        if (server->new_session == NULL)
-            continue;
-
-        pthread_t cl_th;
-        struct tcp_socket *client = (struct tcp_socket *)malloc(sizeof(client));
-
-        /* New session thread */
-        client->s = s_client;
-        pthread_create(&cl_th, NULL, server->new_session, (void *)client);
-        pthread_detach(cl_th);
-    }
-    return NULL;
-}
-
-
-struct tcp_socket* tcp_socket_init(void)
+int tcp_socket_init(struct tcp_socket *sock)
 {
 #ifdef WIN32
     WSADATA wsaData;
     WORD version_wanted = MAKEWORD(1, 1);
 
     if (WSAStartup(version_wanted, &wsaData) != 0)
-        return NULL;
+        return SOCKET_ERROR;
 #endif
-    struct tcp_socket *sock = NULL;
-    sock = (struct tcp_socket *)malloc(sizeof(sock));
-    /* Init signals */
     sock->accept_error = NULL;
     sock->new_session = NULL;
-    return sock;
+    return 0;
 }
 
 int tcp_socket_connect(struct tcp_socket *sock, const char *ip, unsigned port)
@@ -113,14 +80,11 @@ int tcp_socket_recv(struct tcp_socket *sock, void *data, size_t len)
     return 0;
 }
 
-int tcp_socket_bind(struct tcp_socket *sock, unsigned port)
+int tcp_socket_bind(struct tcp_socket *sock, unsigned port, unsigned max_clients)
 {
     int ret_val;
+    SOCKET s_client;
     struct sockaddr_in sock_addr;
-
-#ifdef WIN32
-    tcp_socket_init_win32();
-#endif
 
     sock->s = socket(AF_INET, SOCK_STREAM, 0);
     if (sock->s == INVALID_SOCKET)
@@ -140,12 +104,35 @@ int tcp_socket_bind(struct tcp_socket *sock, unsigned port)
     if (ret_val == SOCKET_ERROR)
         return SOCKET_ERROR;
 
-    ret_val = listen(sock->s, 5);
+    ret_val = listen(sock->s, max_clients);
     if (ret_val == SOCKET_ERROR)
         return SOCKET_ERROR;
 
-    pthread_create(&sock->srv_th, NULL, &tcp_socket_srv_thread, (void *)sock);
-    pthread_detach(sock->srv_th);
+    for (;;) {
+        s_client = accept(sock->s, NULL, NULL);
+        if (s_client == SOCKET_ERROR) {
+            if (sock->accept_error != NULL)
+                sock->accept_error();
+            continue;
+        }
+
+        if (sock->new_session == NULL)
+            continue;
+
+        /* New session thread */
+        if (max_clients > 1) {
+            pthread_t cl_th;
+            struct tcp_socket *client = (struct tcp_socket *)malloc(sizeof(client));
+
+            client->s = s_client;
+            pthread_create(&cl_th, NULL, sock->new_session, (void *)client);
+            pthread_detach(cl_th);
+        } else {
+            struct tcp_socket client;
+            client.s = s_client;
+            sock->new_session((void *)&client);
+        }
+    }
     return 0;
 }
 
@@ -161,7 +148,7 @@ void tcp_socket_close(struct tcp_socket *sock)
     }
 }
 
-void tcp_socket_quit(struct tcp_socket *sock)
+void tcp_socket_quit(void)
 {
 #ifdef WIN32
     if (WSACleanup() == SOCKET_ERROR) {
@@ -173,5 +160,4 @@ void tcp_socket_quit(struct tcp_socket *sock)
         }
     }
 #endif
-    free(sock);
 }

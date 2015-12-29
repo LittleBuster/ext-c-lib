@@ -5,11 +5,14 @@ LDFLAGS=-lpthread
 
 all: extc
 
-extc: tcpsocket.o
-	$(CC) tcpsocket.o -shared -o libextc.so $(CFLAGS) $(LDFLAGS)
+extc: tcpsocket.o timer.o
+	$(CC) tcpsocket.o timer.o -shared -o libextc.so $(CFLAGS) $(LDFLAGS)
 
 tcpsocket.o: tcpsocket.c
 	$(CC) tcpsocket.c -c $(CFLAGS) $(LDFLAGS) -fPIC
+
+timer.o: timer.c
+	$(CC) timer.c -c $(CFLAGS) $(LDFLAGS) -fPIC
 
 install:
 	-sudo mkdir /usr/include/extc

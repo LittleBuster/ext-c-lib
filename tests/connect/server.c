@@ -6,7 +6,8 @@
 
 struct tcp_socket server;
 
-void *new_session(void *data) {
+void *new_session(void *data)
+{
     struct tcp_socket *client;
     client = (struct tcp_socket *)data;
 

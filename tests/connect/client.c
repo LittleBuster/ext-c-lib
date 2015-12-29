@@ -4,7 +4,8 @@
 #include <stdlib.h>
 #include <assert.h>
 
-int main() {
+int main()
+{
     int ret_val;
 	struct tcp_socket client;
 

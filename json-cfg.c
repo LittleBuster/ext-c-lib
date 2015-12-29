@@ -73,7 +73,7 @@ int json_configs_get(size_t section, const char *subsection, struct param *param
             char *str = (char *)malloc(255);
             strcpy(str, json_string_value(jsub_obj));
             if (str == NULL)
-                return 01;
+                return -1;
             params[i].param = (void *)str;
         }
 

@@ -5,8 +5,8 @@ LDFLAGS=-lpthread
 
 all: extc
 
-extc: tcpsocket.o timer.o json-cfg.o
-	$(CC) tcpsocket.o timer.o json-cfg.o -shared -o libextc.so $(CFLAGS) $(LDFLAGS)
+extc: tcpsocket.o timer.o json-cfg.o dlist.o slist.o
+	$(CC) tcpsocket.o timer.o json-cfg.o dlist.o slist.o -shared -o libextc.so $(CFLAGS) $(LDFLAGS)
 
 tcpsocket.o: tcpsocket.c
 	$(CC) tcpsocket.c -c $(CFLAGS) $(LDFLAGS) -fPIC
@@ -16,6 +16,12 @@ timer.o: timer.c
 
 json-cfg.o: json-cfg.c
 	$(CC) json-cfg.c -c $(CFLAGS) $(LDFLAGS) -fPIC
+
+slist.o: slist.c
+	$(CC) slist.c -c $(CFLAGS) $(LDFLAGS) -fPIC
+
+dlist.o: dlist.c
+	$(CC) dlist.c -c $(CFLAGS) $(LDFLAGS) -fPIC
 
 install:
 	-sudo mkdir /usr/include/extc

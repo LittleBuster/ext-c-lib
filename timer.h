@@ -37,6 +37,7 @@ void timer_init(struct timer *tmr);
  * @data: user data for callbasck function
  *
  * returns -1: if interval == 0 or timer handle == NULL
+ * returns 0: if succefully exit
  */
 int timer_create(struct timer *tmr, unsigned interval, void (*tmr_handle)(void*), void *data);
 

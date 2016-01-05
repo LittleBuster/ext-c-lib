@@ -11,6 +11,8 @@
  * of the Licence, or (at your option) any later version.
  */
 
+#ifndef __TCP_SOCKET_H__
+#define __TCP_SOCKET_H__
 
 #include <pthread.h>
 
@@ -35,14 +37,19 @@ struct tcp_socket {
     /* Socket id */
     SOCKET s;
 
-    /* Client accept error signal */
-    void (*accept_error)(void);
+    /* User data */
+    void *data;
+
+    /**
+     * Client accept error signal
+     * @data: user data
+     */
+    void (*accept_error)(void *data);
 
     /*
      * New client session
-     * WARNING! If clients > 1, data need to be freed!
      */
-    void* (*new_session)(void *data);
+    void (*new_session)(struct tcp_socket *s_client, void *data);
 };
 
 
@@ -89,11 +96,12 @@ int tcp_socket_recv(struct tcp_socket *sock, void *data, size_t len);
  * @sock: socket struct
  * @ip: ip address of server
  * @port: tcp port of server
+ * @data: user data
  *
  * Returns 0 if succeful starting
  * Returns SOCKET_ERROR if fail binding ip address or port
  */
-int tcp_socket_bind(struct tcp_socket *sock, unsigned port, unsigned max_clients);
+int tcp_socket_bind(struct tcp_socket *sock, unsigned short port, unsigned max_clients, void *data);
 
 /*
  * Close connection
@@ -104,3 +112,6 @@ void tcp_socket_close(struct tcp_socket *sock);
  * Free win32 memory
  */
 void tcp_socket_quit(void);
+
+
+#endif

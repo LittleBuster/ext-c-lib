@@ -15,10 +15,10 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include <errno.h>
-#include "timer.h"
+#include "stimer.h"
 
 
-void timer_init(struct timer *tmr)
+void stimer_init(struct stimer *tmr)
 {
     tmr->is_work = 0;
     tmr->interval = 0;
@@ -26,7 +26,7 @@ void timer_init(struct timer *tmr)
     tmr->timer_handle = NULL;
 }
 
-int timer_create(struct timer *tmr, unsigned interval, void (*tmr_handle)(void*), void *data)
+int stimer_create(struct stimer *tmr, unsigned interval, void (*tmr_handle)(void*), void *data)
 {
     if ((interval ==  0) || (tmr_handle == NULL))
         return -1;
@@ -46,7 +46,7 @@ int timer_create(struct timer *tmr, unsigned interval, void (*tmr_handle)(void*)
     return 0;
 }
 
-void timer_stop(struct timer *tmr)
+void stimer_stop(struct stimer *tmr)
 {
     tmr->is_work = 0;
 }

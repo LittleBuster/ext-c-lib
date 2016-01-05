@@ -16,6 +16,25 @@
 #include <stdlib.h>
 
 
+struct sock_data {
+    struct tcp_socket *client;
+    struct tcp_socket *server;
+};
+
+
+void *new_client(void *data)
+{
+    struct sock_data *sdata = (struct sock_data *)data;
+
+    sdata->server->new_session(sdata->client, sdata->server->data);
+
+    tcp_socket_close(sdata->client);
+    free(sdata->client);
+    free(sdata);
+    return NULL;
+}
+
+
 int tcp_socket_init(struct tcp_socket *sock)
 {
 #ifdef WIN32
@@ -55,7 +74,7 @@ int tcp_socket_send(struct tcp_socket *sock, void *data, size_t len)
     int ret_val = 0;
 
     for (;;) {
-        ret_val = send(sock->s, data, len, 0);
+        ret_val = send(sock->s, data, len, MSG_NOSIGNAL);
         if (ret_val == SOCKET_ERROR)
             return SOCKET_ERROR;
 
@@ -67,25 +86,29 @@ int tcp_socket_send(struct tcp_socket *sock, void *data, size_t len)
 
 int tcp_socket_recv(struct tcp_socket *sock, void *data, size_t len)
 {
-    int ret_val;
+    size_t bytes;
 
-    for (;;) {
-        ret_val = recv(sock->s, data, len, 0);
-        if (ret_val == SOCKET_ERROR)
+    while (len) {
+        bytes = recv(sock->s, data, len, MSG_NOSIGNAL|MSG_WAITALL);
+        if (bytes == len)
+            break;
+
+        if ((bytes == 0) || (bytes == SOCKET_ERROR))
             return SOCKET_ERROR;
 
-        if (ret_val == (int)len)
-            break;
+        data += bytes;
+        len -= bytes;
     }
     return 0;
 }
 
-int tcp_socket_bind(struct tcp_socket *sock, unsigned port, unsigned max_clients)
+int tcp_socket_bind(struct tcp_socket *sock, unsigned short port, unsigned max_clients, void *data)
 {
     int ret_val;
     SOCKET s_client;
     struct sockaddr_in sock_addr;
 
+    sock->data = data;
     sock->s = socket(AF_INET, SOCK_STREAM, 0);
     if (sock->s == INVALID_SOCKET)
         return SOCKET_ERROR;
@@ -112,7 +135,7 @@ int tcp_socket_bind(struct tcp_socket *sock, unsigned port, unsigned max_clients
         s_client = accept(sock->s, NULL, NULL);
         if (s_client == SOCKET_ERROR) {
             if (sock->accept_error != NULL)
-                sock->accept_error();
+                sock->accept_error(sock->data);
             continue;
         }
 
@@ -123,14 +146,17 @@ int tcp_socket_bind(struct tcp_socket *sock, unsigned port, unsigned max_clients
         if (max_clients > 1) {
             pthread_t cl_th;
             struct tcp_socket *client = (struct tcp_socket *)malloc(sizeof(client));
+            struct sock_data *sdata = (struct sock_data *)malloc(sizeof(sdata));
+            sdata->client = client;
+            sdata->server = sock;
 
             client->s = s_client;
-            pthread_create(&cl_th, NULL, sock->new_session, (void *)client);
+            pthread_create(&cl_th, NULL, &new_client, (void *)sdata);
             pthread_detach(cl_th);
         } else {
             struct tcp_socket client;
             client.s = s_client;
-            sock->new_session((void *)&client);
+            sock->new_session(&client, sock->data);
         }
     }
     return 0;

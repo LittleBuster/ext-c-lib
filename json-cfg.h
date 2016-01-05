@@ -11,6 +11,10 @@
  * of the Licence, or (at your option) any later version.
  */
 
+#ifndef __JSON_CFG_H__
+#define __JSON_CFG_H__
+
+
 #include <stdio.h>
 
 enum {
@@ -57,3 +61,6 @@ int json_configs_get(size_t section, const char *subsection, struct param *param
  * Free memory
  */
 void json_configs_free(void);
+
+
+#endif

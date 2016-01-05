@@ -11,7 +11,11 @@
  * of the Licence, or (at your option) any later version.
  */
 
-struct timer {
+#ifndef __TIMER_H__
+#define __TIMER_H__
+
+
+struct stimer {
     /* time settings */
     unsigned is_work;
     unsigned interval;
@@ -27,7 +31,7 @@ struct timer {
 /*
  * Timer initialization
  */
-void timer_init(struct timer *tmr);
+void stimer_init(struct stimer *tmr);
 
 /**
  * Start timer
@@ -39,9 +43,12 @@ void timer_init(struct timer *tmr);
  * returns -1: if interval == 0 or timer handle == NULL
  * returns 0: if succefully exit
  */
-int timer_create(struct timer *tmr, unsigned interval, void (*tmr_handle)(void*), void *data);
+int stimer_create(struct stimer *tmr, unsigned interval, void (*tmr_handle)(void*), void *data);
 
 /*
  * Stop timer cycle
  */
-void timer_stop(struct timer *tmr);
+void stimer_stop(struct stimer *tmr);
+
+
+#endif

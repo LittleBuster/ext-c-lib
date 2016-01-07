@@ -38,7 +38,7 @@ int stimer_create(struct stimer *tmr, unsigned interval, void (*tmr_handle)(void
 
     while(tmr->is_work) {
         struct timeval tv = {tmr->interval, 0};
-        if (-1 == select(0, NULL, NULL, NULL, &tv))
+        if (select(0, NULL, NULL, NULL, &tv) == -1)
             if (EINTR == errno)
                 continue;
         tmr->timer_handle(tmr->data);

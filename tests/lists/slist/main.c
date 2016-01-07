@@ -8,7 +8,7 @@
 
 int main(int argc, char const *argv[])
 {
-    struct slist *list;
+    struct slist *list = NULL;
     struct slist *s;
 
     puts("\nStarting test");

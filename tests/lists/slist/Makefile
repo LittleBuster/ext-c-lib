@@ -7,4 +7,4 @@ all:
 	$(CC) main.c -o test $(CFLAGS) $(LDFLAGS)
 
 clean:
-	rm test
+	-rm test

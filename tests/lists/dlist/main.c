@@ -58,5 +58,5 @@ int main(int argc, char const *argv[])
     dlist_free_all(list);
 
     puts("\n-----------------------");
-	puts("Test complete. [OK]");
+    puts("Test complete. [OK]");
 }

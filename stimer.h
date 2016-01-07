@@ -11,8 +11,8 @@
  * of the Licence, or (at your option) any later version.
  */
 
-#ifndef __TIMER_H__
-#define __TIMER_H__
+#ifndef __SELECT_TIMER_H__
+#define __SELECT_TIMER_H__
 
 
 struct stimer {

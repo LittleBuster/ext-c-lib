@@ -1,6 +1,8 @@
 /* Single-linked list
  *
- * Copyright (C) 2015 Sergey Denisov.
+ * Extended C-library
+ *
+ * Copyright (C) 2015-2016 Sergey Denisov.
  * Written by Peter Mattis, Spencer Kimball and Josh MacDonald Copyright (C) 1995-1997
  * Rewritten by Sergey Denisov aka LittleBuster (DenisovS21@gmail.com) 2015
  *
@@ -10,8 +12,8 @@
  * of the Licence, or (at your option) any later version.
  */
 
-#ifndef __SLIST_H__
-#define __SLIST_H__
+#ifndef __SINGLE_LIST_H__
+#define __SINGLE_LIST_H__
 
 #include <stdio.h>
 
@@ -26,52 +28,68 @@ struct slist {
 
 /**
  * Add new element in end of list
- * @dlist: single-linked list struct
+ * @list: single-linked list struct
  * @data: user's data
+ *
+ * returns single-linked list with added element
  */
-struct slist *slist_append(struct slist *slist, void *data);
+struct slist *slist_append(struct slist *list, void *data);
 
 /**
  * Add new element in start of list
- * @dlist: single-linked list struct
+ * @list: single-linked list struct
  * @data: user's data
+ *
+ * returns single-linked list with added element
  */
-struct slist *slist_prepend(struct slist *slist, void *data);
+struct slist *slist_prepend(struct slist *list, void *data);
 
 /*
  * Get size of list
  */
-unsigned slist_len(struct slist *slist);
+unsigned slist_len(struct slist *list);
 
-/*
+/**
  * Get element from list by number
+ * @list: single-linked list
+ * @n: number of element
+ *
+ * returns single-list structure
  */
-struct slist *slist_nth(struct slist *slist, unsigned n);
+struct slist *slist_nth(struct slist *list, unsigned n);
 
-/*
- * Get data from list by number
+/**
+ * Get user data from list by number
+ * @list: single-linked list
+ * @n: number of element
+ *
+ * returns user data
  */
-struct slist *slist_nth_data(struct slist *slist, unsigned n);
+void *slist_nth_data(struct slist *list, unsigned n);
 
 /*
  * Get last element from list
  */
-struct slist *slist_last(struct slist *slist);
+struct slist *slist_last(struct slist *list);
 
-/*
- * Remove element from list
+/**
+ * Remove element from list by data
+ * @list: single-linked list
+ * @data: user data
+ *
+ * returns single-linked list without element
  */
-struct slist *slist_remove(struct slist *slist, const void *data);
-
-/*
- * Free memory
- */
-void slist_free(struct slist *slist);
+struct slist *slist_remove(struct slist *list, const void *data);
 
 /*
  * Free list elements
  */
-void slist_free_all(struct slist *slist);
+void slist_free_all(struct slist *list);
+
+/*
+ * Free memory
+ */
+void slist_free(struct slist *list);
 
 
 #endif

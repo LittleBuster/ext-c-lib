@@ -1,6 +1,8 @@
 /* Double-linked list
  *
- * Copyright (C) 2015 Sergey Denisov.
+ * Extended C-library
+ *
+ * Copyright (C) 2015-2016 Sergey Denisov.
  * Written by Peter Mattis, Spencer Kimball and Josh MacDonald Copyright (C) 1995-1997
  * Rewritten by Sergey Denisov aka LittleBuster (DenisovS21@gmail.com) 2015
  *
@@ -10,8 +12,8 @@
  * of the Licence, or (at your option) any later version.
  */
 
-#ifndef __DLIST_H__
-#define __DLIST_H__
+#ifndef __DOUBLE_LIST_H__
+#define __DOUBLE_LIST_H__
 
 #include <stdio.h>
 
@@ -29,57 +31,73 @@ struct dlist {
 
 /**
  * Add new element in end of list
- * @dlist: double-linked list struct
+ * @list: double-linked list struct
  * @data: user's data
+ *
+ * returns double-linked list with added element
  */
-struct dlist *dlist_append(struct dlist *dlist, void *data);
+struct dlist *dlist_append(struct dlist *list, void *data);
 
 /**
  * Add new element in start of list
- * @dlist: double-linked list struct
+ * @list: double-linked list struct
  * @data: user's data
+ *
+ * returns double-linked list with added element
  */
-struct dlist *dlist_prepend(struct dlist *dlist, void *data);
+struct dlist *dlist_prepend(struct dlist *list, void *data);
 
 /*
  * Get size of list
  */
-unsigned dlist_len(struct dlist *dlist);
+unsigned dlist_len(struct dlist *list);
 
-/*
+/**
  * Get element from list by number
+ * @list: double-linked list
+ * @n: number of element
+ *
+ * returns double-list structure
  */
-struct dlist *dlist_nth(struct dlist *dlist, unsigned n);
+struct dlist *dlist_nth(struct dlist *list, unsigned n);
+
+/**
+ * Get user data from list by number
+ * @list: double-linked list
+ * @n: number of element
+ *
+ * returns user data
+ */
+void *dlist_nth_data(struct dlist *list, unsigned n);
 
 /*
- * Get data from list by number
+ * Get first element of list
  */
-struct dlist *dlist_nth_data(struct dlist *dlist, unsigned n);
+struct dlist *dlist_first(struct dlist *list);
 
 /*
- * First element from list
+ * Get last element from list
  */
-struct dlist *dlist_first(struct dlist *dlist);
+struct dlist *dlist_last(struct dlist *list);
+
+/**
+ * Remove element from list by data
+ * @list: double-linked list
+ * @data: user data
+ *
+ * returns double-linked list without element
+ */
+struct dlist *dlist_remove(struct dlist *list, const void *data);
 
 /*
- * Last element from list
+ * Free list elements
  */
-struct dlist *dlist_last(struct dlist *dlist);
-
-/*
- * Remove element from list
- */
-struct dlist *dlist_remove(struct dlist *dlist, const void *data);
+void dlist_free_all(struct dlist *list);
 
 /*
  * Free memory
  */
-void dlist_free(struct dlist *dlist);
-
-/*
- * Free all elements
- */
-void dlist_free_all(struct dlist *dlist);
+void dlist_free(struct dlist *list);
 
 
 #endif

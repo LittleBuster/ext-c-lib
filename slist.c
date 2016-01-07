@@ -1,6 +1,8 @@
 /* Single-linked list
  *
- * Copyright (C) 2015 Sergey Denisov.
+ * Extended C-library
+ *
+ * Copyright (C) 2015-2016 Sergey Denisov.
  * Written by Peter Mattis, Spencer Kimball and Josh MacDonald Copyright (C) 1995-1997
  * Rewritten by Sergey Denisov aka LittleBuster (DenisovS21@gmail.com) 2015
  *
@@ -14,107 +16,106 @@
 #include <stdlib.h>
 
 
-struct slist *slist_append(struct slist *slist, void *data)
+struct slist *slist_append(struct slist *list, void *data)
 {
     struct slist *new_list;
     struct slist *last;
 
-    new_list = (struct slist *)malloc(sizeof(struct slist));
+    new_list = (struct slist *)malloc(sizeof(new_list));
     new_list->data = data;
     new_list->next = NULL;
 
-    if (slist) {
-        last = slist_last(slist);
+    if (list) {
+        last = slist_last(list);
         last->next = new_list;
-        return slist;
+        return list;
     }
     else
         return new_list;
 }
 
-struct slist *slist_prepend(struct slist *slist, void *data)
+struct slist *slist_prepend(struct slist *list, void *data)
 {
     struct slist *new_list;
 
-    new_list = (struct slist *)malloc(sizeof(struct slist));
+    new_list = (struct slist *)malloc(sizeof(new_list));
     new_list->data = data;
-    new_list->next = slist;
+    new_list->next = list;
 
     return new_list;
 }
 
-struct slist *slist_last(struct slist *slist)
+struct slist *slist_last(struct slist *list)
 {
-    if (slist)
-        while (slist->next)
-            slist = slist->next;
-    return slist;
+    if (list)
+        while (list->next)
+            list = list->next;
+    return list;
 }
 
-unsigned slist_len(struct slist *slist)
+unsigned slist_len(struct slist *list)
 {
     unsigned len;
 
     len = 0;
-    while (slist) {
+    while (list) {
         len++;
-        slist = slist->next;
+        list = list->next;
     }
     return len;
 }
 
-struct slist *slist_nth(struct slist *slist, unsigned n)
+struct slist *slist_nth(struct slist *list, unsigned n)
 {
-    while (n-- > 0 && slist)
-        slist = slist->next;
+    while (n-- > 0 && list)
+        list = list->next;
 
-    return slist;
+    return list;
 }
 
-struct slist *slist_nth_data(struct slist *slist, unsigned n)
+void *slist_nth_data(struct slist *list, unsigned n)
 {
-    while (n-- > 0 && slist)
-        slist = slist->next;
+    while (n-- > 0 && list)
+        list = list->next;
 
-    return slist ? slist->data : NULL;
+    return list ? list->data : NULL;
 }
 
-struct slist *slist_remove(struct slist *slist, const void *data)
+struct slist *slist_remove(struct slist *list, const void *data)
 {
     struct slist *tmp, *prev = NULL;
 
-    tmp = slist;
+    tmp = list;
     while (tmp) {
         if (tmp->data == data) {
             if (prev)
                 prev->next = tmp->next;
             else
-                slist = tmp->next;
+                list = tmp->next;
             free(tmp);
             break;
         }
         prev = tmp;
         tmp = prev->next;
     }
-    return slist;
+    return list;
 }
 
-void slist_free(struct slist *slist)
-{
-    free(slist);
-}
-
-void slist_free_all(struct slist *slist)
+void slist_free_all(struct slist *list)
 {
     struct slist *tmp;
 
-    if (!slist)
+    if (!list)
         return;
 
-    while (slist) {
-        tmp = slist;
-        slist = slist->next;
+    while (list) {
+        tmp = list;
+        list = list->next;
         free(tmp);
     }
-    free(slist);
+}
+
+void slist_free(struct slist *list)
+{
+    free(list);
 }

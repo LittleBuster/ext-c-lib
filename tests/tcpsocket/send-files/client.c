@@ -1,4 +1,5 @@
 #include <extc/tcpsocket.h>
+#include <sys/stat.h>
 #include "filetransfer.h"
 #include <stdio.h>
 #include <string.h>
@@ -37,6 +38,9 @@ int main()
 
     puts("\nStarting test");
     puts("-----------------------\n");
+
+    mkdir("out", 0777);
+
 
     ret_val = tcp_socket_init(&client);
     if (ret_val != 0) {

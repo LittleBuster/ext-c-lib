@@ -9,7 +9,7 @@ PLATFORM=UNIX
 TCPSOCKET=true
 SLIST=true
 DLIST=true
-JSONCONF=false
+JSONCONF=true
 TIMER=true
 
 
@@ -26,7 +26,7 @@ if [[ $TCPSOCKET == true ]]; then
 	STR="gcc tcpsocket.c -c $CFLAGS $PIC -lpthread"
 	echo $STR
 	$STR
-	
+
 	OUT+=" tcpsocket.o -lpthread"
 fi
 

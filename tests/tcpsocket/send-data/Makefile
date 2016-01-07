@@ -1,11 +1,12 @@
 CC=gcc
 CFLAGS=-Wall -I. -std=gnu99
-LDFLAGS=-lpthread
+LDFLAGS=-lextc
 
 
 all:
-	$(CC) server.c -lextc -o server $(LDFLAGS)
-	$(CC) client.c -lextc -o client $(LDFLAGS)
+	$(CC) server.c -o server $(CFLAGS) $(LDFLAGS)
+	$(CC) client.c -o client $(CFLAGS) $(LDFLAGS)
 
 clean:
-	rm server client
+	-rm server
+	-rm client

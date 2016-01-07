@@ -4,7 +4,7 @@ LDFLAGS=-lextc
 
 
 all:
-	$(CC) main.c -o test $(LDFLAGS)
+	$(CC) main.c -o test $(CFLAGS) $(LDFLAGS)
 
 clean:
 	rm test

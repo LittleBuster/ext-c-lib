@@ -49,7 +49,7 @@ int file_transfer_send(struct tcp_socket *sock, const char *fname, struct transf
 
     if (strlen(fname) > 255)
         return ERR_LONG_NAME;
-        strncpy(finfo.filename, fname, 255);
+    strncpy(finfo.filename, fname, 255);
 
     file = fopen(fname, "rb");
     if (file == NULL)
@@ -124,10 +124,90 @@ int file_transfer_send(struct tcp_socket *sock, const char *fname, struct transf
     if (answ.code != ANSW_OK)
         return ERR_SEND_FILE;
 
+    if (sig != NULL)
+        if (sig->end_transfer != NULL)
+            sig->end_transfer(sig->data);
     return 0;
 }
 
-int file_transfer_recv(struct tcp_socket *sock, const char *fname, struct transf_sig *sig)
+int file_transfer_recv(struct tcp_socket *sock, const char *path, struct transf_sig *sig)
 {
+    FILE *file;
+    char *last_block;
+    char data[512];
+    char file_path[512];
+    int ret_val;
+    unsigned long int i;
+    struct sock_answ answ;
+    struct file_info finfo;
+
+    if (strlen(path) > 255)
+        return ERR_LONG_PATH;
+
+    ret_val = tcp_socket_recv(sock, (void *)&finfo, sizeof(finfo));
+    if (ret_val == SOCKET_ERROR)
+        return ERR_RECV_INFO;
+
+    if (sig != NULL)
+        if (sig->start_transfer != NULL)
+            sig->start_transfer(finfo.blocks, sig->data);
+
+    strcpy(file_path, path);
+    strcat(file_path, finfo.filename);
+
+    file = fopen(file_path, "wb");
+    if (file == NULL)
+        return ERR_OPEN_FILE;
+
+    answ.code = ANSW_OK;
+    ret_val = tcp_socket_send(sock, (void *)&answ, sizeof(answ));
+    if (ret_val == SOCKET_ERROR)
+        return ERR_RECV_INFO;
+
+    for (i = 0; i < finfo.blocks; i++) {
+        ret_val = tcp_socket_recv(sock, (void *)&data, sizeof(data));
+        if (ret_val == SOCKET_ERROR) {
+            fclose(file);
+            return ERR_RECV_BLOCK;
+        }
+
+        fwrite(data, 512, 1, file);
+
+        if (sig != NULL)
+            if (sig->progress != NULL)
+                sig->progress(sig->data);
+    }
+
+    if (finfo.last_block == 0) {
+        fclose(file);
+
+        answ.code = ANSW_OK;
+        ret_val = tcp_socket_send(sock, (void *)&answ, sizeof(answ));
+        if (ret_val == SOCKET_ERROR)
+            return ERR_RECV_FILE;
+        else
+            return 0;
+    }
+
+    last_block = (char *)malloc(finfo.last_block);
+
+    ret_val = tcp_socket_recv(sock, (void *)last_block, finfo.last_block);
+    if (ret_val == SOCKET_ERROR) {
+        fclose(file);
+        free(last_block);
+        return ERR_RECV_LBLOCK;
+    }
+    fclose(file);
+    free(last_block);
+
+    answ.code = ANSW_OK;
+    ret_val = tcp_socket_send(sock, (void *)&answ, sizeof(answ));
+    if (ret_val == SOCKET_ERROR)
+        return ERR_RECV_FILE;
+
+    if (sig != NULL)
+        if (sig->end_transfer != NULL)
+            sig->end_transfer(sig->data);
+
     return 0;
 }

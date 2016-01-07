@@ -1,6 +1,6 @@
 CC=gcc
 CFLAGS=-Wall -I. -std=gnu99
-LDFLAGS=-lpthread -lextc
+LDFLAGS=-lextc
 
 
 all:

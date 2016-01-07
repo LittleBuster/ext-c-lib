@@ -12,15 +12,26 @@
 #ifndef __FILE_TRANSFER_H__
 #define __FILE_TRANSFER_H__
 
+
 #include <extc/tcpsocket.h>
 
-enum errors {
+
+enum send_errors {
     ERR_LONG_NAME = 100,
     ERR_EXISTS_FILE = 101,
     ERR_SEND_INFO = 102,
     ERR_SEND_BLOCK = 103,
     ERR_SEND_LBLOCK = 104,
     ERR_SEND_FILE = 105
+};
+
+enum recv_errors {
+    ERR_LONG_PATH = 200,
+    ERR_RECV_INFO = 201,
+    ERR_OPEN_FILE = 202,
+    ERR_RECV_BLOCK = 203,
+    ERR_RECV_LBLOCK = 204,
+    ERR_RECV_FILE = 205
 };
 
 enum codes {
@@ -77,12 +88,12 @@ int file_transfer_send(struct tcp_socket *sock, const char *fname, struct transf
 /**
  * Receiving file from other tcp socket
  * @sock: tcp socket structure
- * @fname: filename of receiving file
+ * @path: receiving file path
  * @sig: signals structure
  *
  * returns :
  */
-int file_transfer_recv(struct tcp_socket *sock, const char *fname, struct transf_sig *sig);
+int file_transfer_recv(struct tcp_socket *sock, const char *path, struct transf_sig *sig);
 
 
 #endif

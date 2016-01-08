@@ -2,7 +2,7 @@
 
 #Platform WIN32 or UNIX
 
-PLATFORM=UNIX
+PLATFORM=WIN32
 
 #Included moduls
 
@@ -11,6 +11,46 @@ SLIST=true
 DLIST=true
 JSONCONF=true
 TIMER=true
+
+
+if [[ $@ == "clean" ]]; then
+    rm -rf *.o
+    if [[ $PLATFORM == UNIX ]]; then
+        rm libextc.so
+    else
+        rm extc.dll
+    fi
+    echo "Temporary files cleared"
+    exit 0
+fi
+
+if [[ $@ == "install" ]]; then
+    if [[ $PLATFORM == UNIX ]]; then
+        sudo mkdir /usr/include/extc/
+        sudo cp *.h /usr/include/extc/
+        sudo cp libextc.so /usr/lib/
+        sudo cp libextc.so /usr/lib64/
+    else
+        mkdir /usr/include/extc/
+        cp *.h /usr/include/extc/
+        cp extc.dll /usr/lib/
+    fi
+    echo "Files installed"
+    exit 0
+fi
+
+if [[ $@ == "remove" ]]; then
+    if [[ $PLATFORM == UNIX ]]; then
+        sudo rm /usr/lib/libextc.so
+        sudo rm /usr/lib64/libextc.so
+        sudo rm -rf /usr/include/extc/
+    else
+        rm -rf /usr/include/extc/
+        rm /usr/lib/extc.dll
+    fi
+    echo "Files removed."
+    exit 0
+fi
 
 
 CFLAGS=" -O2 -Wall -Wno-pointer-arith -I. -pedantic -std=gnu99"

@@ -96,6 +96,7 @@ int tcp_socket_recv(struct tcp_socket *sock, void *data, size_t len);
  * @sock: socket struct
  * @ip: ip address of server
  * @port: tcp port of server
+ * @max_clients: maximum connected clients
  * @data: user data
  *
  * Returns 0 if succeful starting

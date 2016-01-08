@@ -54,7 +54,7 @@ unsigned slist_len(struct slist *list);
  * @list: single-linked list
  * @n: number of element
  *
- * returns single-list structure
+ * returns single-linked list structure
  */
 struct slist *slist_nth(struct slist *list, unsigned n);
 

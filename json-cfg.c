@@ -53,6 +53,7 @@ int json_configs_load(const char *filename)
     json_cfg.root = json_loads(json_cfg.data, 0, &error);
     if (!json_is_array(json_cfg.root)) {
         json_decref(json_cfg.root);
+        free(json_cfg.data);
         return -1;
     }
     return 0;
@@ -85,11 +86,7 @@ int json_configs_get(size_t section, const char *subsection, struct param *param
                 return -1;
             params[i].param = (void *)num;
         }
-
-        json_decref(jsub_obj);
     }
-    json_decref(jobj);
-    json_decref(jdata);
     return 0;
 }
 

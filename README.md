@@ -22,6 +22,39 @@ For Windows you need to install MSYS2 tool and Jansson library (if you want Json
 <br>
 <a href="http://www.digip.org/jansson/">http://www.digip.org/jansson/</a>
 <br>
+If you want to install library, you need to write:
+For Unix (Linux,FreeBSD,MacOS...):
+````
+./build.sh -p unix install
+````
+For Windows:
+````
+./build.sh -p win32 install
+````
+<br>
+If you want to remove library, you need to write:
+For Unix (Linux,FreeBSD,MacOS...):
+````
+./build.sh -p unix remove
+````
+For Windows:
+````
+./build.sh -p win32 remove
+````
+<br>
+<br>
+If you want to clean temporary files and library in folder after installing, you need to write:
+For Unix (Linux,FreeBSD,MacOS...):
+````
+./build.sh -p unix clean
+````
+For Windows:
+````
+./build.sh -p win32 clean
+````
+<br>
+
+<br>
 <br>
 Tested platforms:
 ````

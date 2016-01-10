@@ -11,6 +11,7 @@ SLIST=true
 DLIST=true
 JSONCONF=true
 TIMER=true
+GETTIME=true
 
 #Params flags
 P=false
@@ -50,6 +51,7 @@ do
         DLIST=false
         JSONCONF=false
         TIMER=false
+        GETTIME=false
 
         ISPARAMS=true
         echo "Building modules..."
@@ -77,6 +79,10 @@ do
                     jcfg )
                         JSONCONF=true
                         echo "[M] JsonConfigs"
+                        ;;
+                    gtime )
+                        GETTIME=true
+                        echo "[M] GetTime"
                         ;;
                 esac
             done
@@ -145,6 +151,7 @@ if [[ $ISPARAMS == false ]]; then
     echo "[M] SingleList"
     echo "[M] DoubleList"
     echo "[M] JsonConfigs"
+    echo "[M] GetTime"
     echo ""
 fi
 
@@ -173,6 +180,7 @@ func_compile $SLIST  "gcc slist.c -c" " slist.o"
 func_compile $DLIST  "gcc dlist.c -c" " dlist.o"
 func_compile $TIMER "gcc stimer.c -c -lrt" " stimer.o -lrt"
 func_compile $JSONCONF "gcc json-cfg.c -c -ljansson" " json-cfg.o -ljansson"
+func_compile $GETTIME "gcc gettime.c -c" " gettime.o"
 
 
 if [[ $PLATFORM ==  UNIX ]]; then

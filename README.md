@@ -14,7 +14,7 @@ For Windows:
 ````
 If you want to compile library with certain modules, you need to write:
 ````
-./build.sh -p unix -m tcp,slist,dlist,jcfg,tmr
+./build.sh -p unix -m tcp,slist,dlist,jcfg,tmr,gtime
 ````
 <br>
 For Windows you need to install MSYS2 tool and Jansson library (if you want JsonConfigs module) from official site:<br>
@@ -53,8 +53,7 @@ For Windows:
 ./build.sh -p win32 clean
 ````
 <br>
-<br>
-Tested platforms:
+<b>Tested platforms:</b>
 ````
 Linux Fedora
 Windows 7

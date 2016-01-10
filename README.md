@@ -22,6 +22,7 @@ For Windows you need to install MSYS2 tool and Jansson library (if you want Json
 <br>
 <a href="http://www.digip.org/jansson/">http://www.digip.org/jansson/</a>
 <br>
+<br>
 If you want to install library, you need to write:
 For Unix (Linux,FreeBSD,MacOS...):
 ````
@@ -42,7 +43,6 @@ For Windows:
 ./build.sh -p win32 remove
 ````
 <br>
-<br>
 If you want to clean temporary files and library in folder after installing, you need to write:
 For Unix (Linux,FreeBSD,MacOS...):
 ````
@@ -52,8 +52,6 @@ For Windows:
 ````
 ./build.sh -p win32 clean
 ````
-<br>
-
 <br>
 <br>
 Tested platforms:

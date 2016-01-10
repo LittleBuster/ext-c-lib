@@ -4,9 +4,13 @@ Extended C library. It is a easy to use library for fast coding on C-language fo
 <br>
 If you want to compile library with all modules, you need to write:
 <br>
-For Unix (Linux,FreeBSD,MacOS...):
+For Linux:
 ````
 ./build.sh -p unix -m all
+````
+For FreeBSD, MacOS:
+````
+./build.sh -p unix -c clang -m all
 ````
 For Windows:
 ````

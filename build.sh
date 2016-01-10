@@ -13,9 +13,12 @@ JSONCONF=true
 TIMER=true
 GETTIME=true
 
+CC="gcc"
+
 #Params flags
 P=false
 M=false
+C=false
 ISPARAMS=false
 ISPF=false
 
@@ -38,6 +41,7 @@ do
         ISPF=true
         P=false
         echo "Target platform: $PLATFORM"
+        continue
     fi
 
     if [[ $M == true ]]; then
@@ -89,13 +93,28 @@ do
         done <<< "$param"
         M=false
         echo ""
+        continue
+    fi
+
+    if [[ $C == true ]]; then
+        CC=$param
+        C=false
+        continue
     fi
 
     if [[ $param == "-p" ]]; then
         P=true
+        continue
     fi
+
     if [[ $param == "-m" ]]; then
         M=true
+        continue
+    fi
+
+    if [[ $param == "-c" ]]; then
+        C=true
+        continue
     fi
 
     #Extended scripts
@@ -157,7 +176,7 @@ fi
 
 
 CFLAGS=" -O2 -Wall -Wno-pointer-arith -I. -pedantic -std=gnu99"
-OUT="gcc"
+OUT=$CC
 
 
 func_compile() {
@@ -167,20 +186,20 @@ func_compile() {
             PIC=" -fPIC"
         fi
 
-        echo $2 $PIC $CFLAGS
-        $2 $PIC $CFLAGS
+        echo $CC $2 $PIC $CFLAGS
+        $CC $2 $PIC $CFLAGS
 
         OUT+=$3
     fi
     return 0
 }
 
-func_compile $TCPSOCKET  "gcc tcpsocket.c -c -lpthread" " tcpsocket.o -lpthread"
-func_compile $SLIST  "gcc slist.c -c" " slist.o"
-func_compile $DLIST  "gcc dlist.c -c" " dlist.o"
-func_compile $TIMER "gcc stimer.c -c -lrt" " stimer.o -lrt"
-func_compile $JSONCONF "gcc json-cfg.c -c -ljansson" " json-cfg.o -ljansson"
-func_compile $GETTIME "gcc gettime.c -c" " gettime.o"
+func_compile $TCPSOCKET  " tcpsocket.c -c -lpthread" " tcpsocket.o -lpthread"
+func_compile $SLIST  " slist.c -c" " slist.o"
+func_compile $DLIST  " dlist.c -c" " dlist.o"
+func_compile $TIMER " stimer.c -c -lrt" " stimer.o -lrt"
+func_compile $JSONCONF " json-cfg.c -c -ljansson" " json-cfg.o -ljansson"
+func_compile $GETTIME " gettime.c -c" " gettime.o"
 
 
 if [[ $PLATFORM ==  UNIX ]]; then

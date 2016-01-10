@@ -14,6 +14,7 @@ void new_session(struct tcp_socket *s_client, void *data)
     puts("\n-----------------------");
     puts("Test complete. [OK]");
 
+    tcp_socket_close(s_client);
     tcp_socket_close(&server);
     tcp_socket_quit();
     exit(0);

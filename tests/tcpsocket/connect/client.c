@@ -7,7 +7,7 @@
 int main()
 {
     int ret_val;
-	struct tcp_socket client;
+    struct tcp_socket client;
 
     puts("\nStarting test");
     puts("-----------------------\n");
@@ -26,9 +26,9 @@ int main()
     } else
         puts("[PASSED] Connection to server.");
 
-	tcp_socket_close(&client);
+    tcp_socket_close(&client);
     tcp_socket_quit();
 
     puts("\n-----------------------");
-	puts("Test complete. [OK]");
+    puts("Test complete. [OK]");
 }

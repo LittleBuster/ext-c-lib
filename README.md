@@ -11,7 +11,7 @@ For Linux:
 ````
 For FreeBSD, MacOS:
 ````
-./build.sh -p unix -c clang -m all
+bash build.sh -p unix -c clang -m all
 ````
 For Windows:
 ````
@@ -64,7 +64,8 @@ For Windows:
 <b>Tested platforms:</b><br>
 ````
 Linux Fedora
-Windows 7
+FreeBSD
+Windows
 ````
 <br>
 Developed by: <b>Sergey Denisov</b>

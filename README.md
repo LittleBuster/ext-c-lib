@@ -2,7 +2,7 @@
 Extended C library. It is a easy to use library for fast coding on C-language for many platforms.
 <br>
 <br>
-<h3><b>Building:</b></h3><br>
+<b>Building:</b><br>
 If you want to compile library with all modules, you need to write:
 <br>
 For Linux:
@@ -28,7 +28,7 @@ For Windows you need to install MSYS2 tool and Jansson library (if you want Json
 <a href="http://www.digip.org/jansson/">http://www.digip.org/jansson/</a>
 <br>
 <br>
-<h3><b>Installation:</b></h3><br>
+<b>Installation:</b><br>
 If you want to install library, you need to write:
 For Unix (Linux,FreeBSD,MacOS...):
 ````
@@ -39,7 +39,7 @@ For Windows:
 ./build.sh -p win32 install
 ````
 <br>
-<h3><b>Removing:</b></h3><br>
+<b>Removing:</b><br>
 If you want to remove library, you need to write:
 For Unix (Linux,FreeBSD,MacOS...):
 ````
@@ -50,7 +50,7 @@ For Windows:
 ./build.sh -p win32 remove
 ````
 <br>
-<h3><b>Cleaning:</b></h3><br>
+<b>Cleaning:</b><br>
 If you want to clean temporary files and library in folder after installing, you need to write:
 For Unix (Linux,FreeBSD,MacOS...):
 ````
@@ -61,7 +61,7 @@ For Windows:
 ./build.sh -p win32 clean
 ````
 <br>
-<h3><b>Tested platforms:</b></h3><br>
+<b>Tested platforms:</b><br>
 ````
 Linux Fedora
 Windows 7

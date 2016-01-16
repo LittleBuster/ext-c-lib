@@ -175,7 +175,7 @@ if [[ $ISPARAMS == false ]]; then
 fi
 
 
-CFLAGS=" -O2 -Wall -Wno-pointer-arith -I. -pedantic -std=gnu99"
+CFLAGS=" -O2 -Wall -Wno-pointer-arith -I. -std=gnu99"
 OUT=$CC
 
 

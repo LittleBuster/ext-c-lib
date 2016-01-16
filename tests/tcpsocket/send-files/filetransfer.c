@@ -161,8 +161,10 @@ int file_transfer_recv(struct tcp_socket *sock, const char *path, struct transf_
 
     answ.code = ANSW_OK;
     ret_val = tcp_socket_send(sock, (void *)&answ, sizeof(answ));
-    if (ret_val == SOCKET_ERROR)
+    if (ret_val == SOCKET_ERROR) {
+        fclose(file);
         return ERR_RECV_INFO;
+    }
 
     for (i = 0; i < finfo.blocks; i++) {
         ret_val = tcp_socket_recv(sock, (void *)&data, sizeof(data));

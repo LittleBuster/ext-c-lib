@@ -1,4 +1,3 @@
-#include <extc/slist.h>
 #include <extc/dlist.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -14,7 +13,7 @@ struct data_t {
 
 int main(int argc, char const *argv[])
 {
-    struct dlist *list;
+    struct dlist *list = NULL;
     struct dlist *k;
 
     puts("\nStarting test");

@@ -41,6 +41,8 @@ int stimer_create(struct stimer *tmr, unsigned interval, void (*tmr_handle)(void
         if (select(0, NULL, NULL, NULL, &tv) == -1)
             if (EINTR == errno)
                 continue;
+        if (tmr->is_work == 0)
+            break;
         tmr->timer_handle(tmr->data);
     }
     return 0;

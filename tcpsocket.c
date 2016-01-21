@@ -35,7 +35,7 @@ void *new_client(void *data)
 }
 
 
-int tcp_socket_init(struct tcp_socket *sock)
+int tcp_socket_init(struct tcp_socket *restrict sock)
 {
 #ifdef WIN32
     WSADATA wsaData;
@@ -49,7 +49,7 @@ int tcp_socket_init(struct tcp_socket *sock)
     return 0;
 }
 
-int tcp_socket_connect(struct tcp_socket *sock, const char *ip, unsigned port)
+int tcp_socket_connect(struct tcp_socket *restrict sock, const char *ip, const unsigned port)
 {
     int ret_val;
     struct sockaddr_in sock_addr;
@@ -69,7 +69,7 @@ int tcp_socket_connect(struct tcp_socket *sock, const char *ip, unsigned port)
     return 0;
 }
 
-int tcp_socket_send(struct tcp_socket *sock, void *data, size_t len)
+int tcp_socket_send(struct tcp_socket *restrict sock, const void *data, const size_t len)
 {
     int ret_val = 0;
 
@@ -84,7 +84,7 @@ int tcp_socket_send(struct tcp_socket *sock, void *data, size_t len)
     return 0;
 }
 
-int tcp_socket_recv(struct tcp_socket *sock, void *data, size_t len)
+int tcp_socket_recv(struct tcp_socket *restrict sock, void *data, size_t len)
 {
     size_t bytes;
 
@@ -102,7 +102,7 @@ int tcp_socket_recv(struct tcp_socket *sock, void *data, size_t len)
     return 0;
 }
 
-int tcp_socket_bind(struct tcp_socket *sock, unsigned short port, unsigned max_clients, void *data)
+int tcp_socket_bind(struct tcp_socket *sock, const unsigned short port, const unsigned max_clients, void *data)
 {
     int ret_val;
     SOCKET s_client;
@@ -162,7 +162,7 @@ int tcp_socket_bind(struct tcp_socket *sock, unsigned short port, unsigned max_c
     return 0;
 }
 
-void tcp_socket_close(struct tcp_socket *sock)
+void tcp_socket_close(struct tcp_socket *restrict sock)
 {
     if (sock->s != INVALID_SOCKET) {
         shutdown(sock->s, 1);

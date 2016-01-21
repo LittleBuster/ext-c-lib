@@ -45,7 +45,7 @@ struct slist *slist_prepend(struct slist *list, void *data)
     return new_list;
 }
 
-struct slist *slist_last(struct slist *list)
+struct slist *slist_last(struct slist *restrict list)
 {
     if (list)
         while (list->next)
@@ -53,11 +53,10 @@ struct slist *slist_last(struct slist *list)
     return list;
 }
 
-unsigned slist_len(struct slist *list)
+size_t slist_len(struct slist *restrict list)
 {
-    unsigned len;
+    size_t len = 0;
 
-    len = 0;
     while (list) {
         len++;
         list = list->next;
@@ -65,7 +64,7 @@ unsigned slist_len(struct slist *list)
     return len;
 }
 
-struct slist *slist_nth(struct slist *list, unsigned n)
+struct slist *slist_nth(struct slist *restrict list, size_t n)
 {
     while (n-- > 0 && list)
         list = list->next;
@@ -73,7 +72,7 @@ struct slist *slist_nth(struct slist *list, unsigned n)
     return list;
 }
 
-void *slist_nth_data(struct slist *list, unsigned n)
+const void *slist_nth_data(struct slist *list, size_t n)
 {
     while (n-- > 0 && list)
         list = list->next;

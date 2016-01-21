@@ -59,7 +59,7 @@ int json_configs_load(const char *filename)
     return 0;
 }
 
-int json_configs_get(size_t section, const char *subsection, struct param *params, size_t sz_p)
+int json_configs_get(const size_t section, const char *subsection, struct param *restrict params, const size_t sz_p)
 {
     json_t *jdata, *jobj;
 

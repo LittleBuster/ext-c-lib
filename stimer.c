@@ -18,7 +18,7 @@
 #include "stimer.h"
 
 
-void stimer_init(struct stimer *tmr)
+void stimer_init(struct stimer *restrict tmr)
 {
     tmr->is_work = 0;
     tmr->interval = 0;
@@ -26,7 +26,7 @@ void stimer_init(struct stimer *tmr)
     tmr->timer_handle = NULL;
 }
 
-int stimer_create(struct stimer *tmr, unsigned interval, void (*tmr_handle)(void*), void *data)
+int stimer_create(struct stimer *restrict tmr, const unsigned interval, void (*tmr_handle)(void*), void *data)
 {
     if ((interval ==  0) || (tmr_handle == NULL))
         return -1;

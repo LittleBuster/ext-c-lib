@@ -56,7 +56,7 @@ struct tcp_socket {
 /*
  * Socket initialization
  */
-int tcp_socket_init(struct tcp_socket *sock);
+int tcp_socket_init(struct tcp_socket *restrict sock);
 
 /**
  * Connect to other socket
@@ -67,7 +67,7 @@ int tcp_socket_init(struct tcp_socket *sock);
  * Returns 0 if succeful connection
  * Returns SOCKET_ERROR if fail connection
  */
-int tcp_socket_connect(struct tcp_socket *sock, const char *ip, unsigned port);
+int tcp_socket_connect(struct tcp_socket *restrict sock, const char *ip, const unsigned port);
 
 /**
  * Send data to other socket
@@ -78,7 +78,7 @@ int tcp_socket_connect(struct tcp_socket *sock, const char *ip, unsigned port);
  * Returns 0 if succeful sending
  * Returns SOCKET_ERROR if fail sending
  */
-int tcp_socket_send(struct tcp_socket *sock, void *data, size_t len);
+int tcp_socket_send(struct tcp_socket *restrict sock, const void *data, const size_t len);
 
 /**
  * Receive data from other socket
@@ -89,7 +89,7 @@ int tcp_socket_send(struct tcp_socket *sock, void *data, size_t len);
  * Returns 0 if succeful receiving
  * Returns SOCKET_ERROR if fail receiving
  */
-int tcp_socket_recv(struct tcp_socket *sock, void *data, size_t len);
+int tcp_socket_recv(struct tcp_socket *restrict sock, void *data, size_t len);
 
 /**
  * Bind ip address and starting socket server
@@ -102,12 +102,12 @@ int tcp_socket_recv(struct tcp_socket *sock, void *data, size_t len);
  * Returns 0 if succeful starting
  * Returns SOCKET_ERROR if fail binding ip address or port
  */
-int tcp_socket_bind(struct tcp_socket *sock, unsigned short port, unsigned max_clients, void *data);
+int tcp_socket_bind(struct tcp_socket *sock, const unsigned short port, const unsigned max_clients, void *data);
 
 /*
  * Close connection
  */
-void tcp_socket_close(struct tcp_socket *sock);
+void tcp_socket_close(struct tcp_socket *restrict sock);
 
 /*
  * Free win32 memory

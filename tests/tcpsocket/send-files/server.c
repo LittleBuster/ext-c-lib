@@ -12,15 +12,17 @@ struct tcp_socket server;
 void start_transfer(unsigned long blocks, void *data)
 {
     puts("[PASSED] Start file transfer");
+    printf("Receiving");
 }
 
 void progress(void *data)
 {
-    printf("[PASSED] Progress (%s)", (char *)data);
+    printf(".");
 }
 
 void end_transfer(void *data)
 {
+    printf("%s\n", "100%");
     puts("[PASSED] End file transfer");
 }
 
@@ -76,6 +78,12 @@ void new_session(struct tcp_socket *s_client, void *data)
         case ERR_RECV_LBLOCK: {
             puts("[FAIL] File receiving");
             puts("error: fail receiving last block of file");
+            fail_quit(s_client, ret_val);
+            break;
+        }
+        case ERR_FILE_WRITE: {
+            puts("[FAIL] File receiving");
+            puts("error: fail writing file");
             fail_quit(s_client, ret_val);
             break;
         }

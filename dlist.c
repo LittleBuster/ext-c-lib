@@ -82,11 +82,10 @@ struct dlist *dlist_prepend(struct dlist *list, void *data)
     return new_list;
 }
 
-unsigned dlist_len(struct dlist *list)
+size_t dlist_len(struct dlist *restrict list)
 {
-    unsigned len;
+    size_t len = 0;
 
-    len = 0;
     while (list) {
         len++;
         list = list->next;
@@ -94,21 +93,21 @@ unsigned dlist_len(struct dlist *list)
     return len;
 }
 
-struct dlist *dlist_nth(struct dlist *list, unsigned n)
+struct dlist *dlist_nth(struct dlist *list, size_t n)
 {
     while ((n-- > 0) && list)
         list = list->next;
     return list;
 }
 
-void *dlist_nth_data(struct dlist *list, unsigned n)
+const void *dlist_nth_data(struct dlist *list, size_t n)
 {
     while ((n-- > 0) && list)
         list = list->next;
     return list ? list->data : NULL;
 }
 
-struct dlist *dlist_first(struct dlist *list)
+struct dlist *dlist_first(struct dlist *restrict list)
 {
     if (list)
         while (list->prev)
@@ -116,7 +115,7 @@ struct dlist *dlist_first(struct dlist *list)
     return list;
 }
 
-struct dlist *dlist_last(struct dlist *list)
+struct dlist *dlist_last(struct dlist *restrict list)
 {
     if (list)
         while (list->next)

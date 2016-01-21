@@ -31,7 +31,7 @@ struct stimer {
 /*
  * Timer initialization
  */
-void stimer_init(struct stimer *tmr);
+void stimer_init(struct stimer *restrict tmr);
 
 /**
  * Start timer
@@ -43,7 +43,7 @@ void stimer_init(struct stimer *tmr);
  * returns -1: if interval == 0 or timer handle == NULL
  * returns 0: if succefully exit
  */
-int stimer_create(struct stimer *tmr, unsigned interval, void (*tmr_handle)(void*), void *data);
+int stimer_create(struct stimer *restrict tmr, const unsigned interval, void (*tmr_handle)(void*), void *data);
 
 /*
  * Stop timer cycle

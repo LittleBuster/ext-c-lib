@@ -55,7 +55,7 @@ int json_configs_load(const char *filename);
  * returns -1: if fail reading param
  * returns 0: if succeful reading
  */
-int json_configs_get(size_t section, const char *subsection, struct param *params, size_t sz_p);
+int json_configs_get(const size_t section, const char *subsection, struct param *restrict params, const size_t sz_p);
 
 /*
  * Free memory

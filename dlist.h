@@ -50,7 +50,7 @@ struct dlist *dlist_prepend(struct dlist *list, void *data);
 /*
  * Get size of list
  */
-unsigned dlist_len(struct dlist *list);
+size_t dlist_len(struct dlist *restrict list);
 
 /**
  * Get element from list by number
@@ -59,7 +59,7 @@ unsigned dlist_len(struct dlist *list);
  *
  * returns double-list structure
  */
-struct dlist *dlist_nth(struct dlist *list, unsigned n);
+struct dlist *dlist_nth(struct dlist *list, size_t n);
 
 /**
  * Get user data from list by number
@@ -68,17 +68,17 @@ struct dlist *dlist_nth(struct dlist *list, unsigned n);
  *
  * returns user data
  */
-void *dlist_nth_data(struct dlist *list, unsigned n);
+const void *dlist_nth_data(struct dlist *list, size_t n);
 
 /*
  * Get first element of list
  */
-struct dlist *dlist_first(struct dlist *list);
+struct dlist *dlist_first(struct dlist *restrict list);
 
 /*
  * Get last element from list
  */
-struct dlist *dlist_last(struct dlist *list);
+struct dlist *dlist_last(struct dlist *restrict list);
 
 /**
  * Remove element from list by data

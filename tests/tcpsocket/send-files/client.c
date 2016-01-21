@@ -10,16 +10,18 @@ struct tcp_socket client;
 
 void start_transfer(unsigned long blocks, void *data)
 {
-    puts("[PASSED] Start file transfer");
+    printf("[PASSED] Start file transfer. Data: (%s)\n", (char *)data);
+    printf("Sending");
 }
 
 void progress(void *data)
 {
-    printf("[PASSED] Progress (%s)", (char *)data);
+    printf(".");
 }
 
 void end_transfer(void *data)
 {
+    printf("%s\n", "100%");
     puts("[PASSED] End file transfer");
 }
 
@@ -40,7 +42,6 @@ int main()
     puts("-----------------------\n");
 
     mkdir("out", 0777);
-
 
     ret_val = tcp_socket_init(&client);
     if (ret_val != 0) {
@@ -97,6 +98,12 @@ int main()
         case ERR_SEND_LBLOCK: {
             puts("[FAIL] File sending");
             puts("error: fail sending last block of file");
+            fail_quit(ret_val);
+            break;
+        }
+        case ERR_FILE_READ: {
+            puts("[FAIL] File sending");
+            puts("error: fail reading file");
             fail_quit(ret_val);
             break;
         }

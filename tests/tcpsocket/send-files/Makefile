@@ -10,3 +10,4 @@ all:
 clean:
 	-rm server
 	-rm client
+	-rm -rf out

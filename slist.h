@@ -47,7 +47,7 @@ struct slist *slist_prepend(struct slist *list, void *data);
 /*
  * Get size of list
  */
-unsigned slist_len(struct slist *list);
+size_t slist_len(struct slist *restrict list);
 
 /**
  * Get element from list by number
@@ -56,7 +56,7 @@ unsigned slist_len(struct slist *list);
  *
  * returns single-linked list structure
  */
-struct slist *slist_nth(struct slist *list, unsigned n);
+struct slist *slist_nth(struct slist *restrict list, size_t n);
 
 /**
  * Get user data from list by number
@@ -65,12 +65,12 @@ struct slist *slist_nth(struct slist *list, unsigned n);
  *
  * returns user data
  */
-void *slist_nth_data(struct slist *list, unsigned n);
+const void *slist_nth_data(struct slist *list, size_t n);
 
 /*
  * Get last element from list
  */
-struct slist *slist_last(struct slist *list);
+struct slist *slist_last(struct slist *restrict list);
 
 /**
  * Remove element from list by data

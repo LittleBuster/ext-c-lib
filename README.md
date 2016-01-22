@@ -11,7 +11,7 @@ For Linux, Windows:
 ````
 For FreeBSD, MacOS:
 ````
-bash build.sh -c clang -m all
+bash build.sh -m all
 ````
 If you want to compile library with certain modules, you need to write:
 ````

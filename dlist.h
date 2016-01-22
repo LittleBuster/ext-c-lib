@@ -68,7 +68,7 @@ struct dlist *dlist_nth(struct dlist *list, size_t n);
  *
  * returns user data
  */
-const void *dlist_nth_data(struct dlist *list, size_t n);
+void *dlist_nth_data(struct dlist *list, size_t n);
 
 /*
  * Get first element of list

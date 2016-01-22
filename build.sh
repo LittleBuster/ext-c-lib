@@ -3,6 +3,18 @@
 #Platform WIN32 or UNIX
 
 PLATFORM=UNIX
+CC="gcc"
+
+if [[ $OSTYPE == "linux-gnu" ]]; then
+    PLATFORM=UNIX
+fi
+if [[ $OSTYPE == "FreeBSD" ]]; then
+    PLATFORM=UNIX
+    CC="clang"
+fi
+if [[ $OSTYPE == "msys" ]]; then
+    PLATFORM=WIN32
+fi
 
 #Included moduls
 
@@ -13,14 +25,9 @@ JSONCONF=true
 TIMER=true
 GETTIME=true
 
-CC="gcc"
-
 #Params flags
-P=false
 M=false
-C=false
 ISPARAMS=false
-ISPF=false
 
 
 if [[ $@ == "" ]]; then
@@ -31,19 +38,6 @@ fi
 
 for param in $@
 do
-    if [[ $P == true ]]; then
-        if [[ $param == "win32" ]]; then
-            PLATFORM=WIN32
-        fi
-        if [[ $param == "unix" ]]; then
-            PLATFORM=UNIX
-        fi
-        ISPF=true
-        P=false
-        echo "Target platform: $PLATFORM"
-        continue
-    fi
-
     if [[ $M == true ]]; then
         if [[ $param == "all" ]]; then
             M=false
@@ -96,24 +90,8 @@ do
         continue
     fi
 
-    if [[ $C == true ]]; then
-        CC=$param
-        C=false
-        continue
-    fi
-
-    if [[ $param == "-p" ]]; then
-        P=true
-        continue
-    fi
-
     if [[ $param == "-m" ]]; then
         M=true
-        continue
-    fi
-
-    if [[ $param == "-c" ]]; then
-        C=true
         continue
     fi
 
@@ -122,9 +100,9 @@ do
         rm -rf *.o
         if [[ $PLATFORM == UNIX ]]; then
             rm libextc.so
-        else
-            rm extc.dll
         fi
+          #  rm extc.dll
+       # fi
         echo "Temporary files cleaned"
         exit 0
     fi
@@ -157,10 +135,6 @@ do
         exit 0
     fi
 done
-
-if [[ $ISPF == false ]]; then
-    echo "Target default platform: $PLATFORM"
-fi
 
 if [[ $ISPARAMS == false ]]; then
     echo "Building modules..."

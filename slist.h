@@ -65,7 +65,7 @@ struct slist *slist_nth(struct slist *restrict list, size_t n);
  *
  * returns user data
  */
-const void *slist_nth_data(struct slist *list, size_t n);
+void *slist_nth_data(struct slist *list, size_t n);
 
 /*
  * Get last element from list

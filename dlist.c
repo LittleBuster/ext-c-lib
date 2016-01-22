@@ -100,7 +100,7 @@ struct dlist *dlist_nth(struct dlist *list, size_t n)
     return list;
 }
 
-const void *dlist_nth_data(struct dlist *list, size_t n)
+void *dlist_nth_data(struct dlist *list, size_t n)
 {
     while ((n-- > 0) && list)
         list = list->next;

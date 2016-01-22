@@ -72,7 +72,7 @@ struct slist *slist_nth(struct slist *restrict list, size_t n)
     return list;
 }
 
-const void *slist_nth_data(struct slist *list, size_t n)
+void *slist_nth_data(struct slist *list, size_t n)
 {
     while (n-- > 0 && list)
         list = list->next;
